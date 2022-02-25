@@ -1,0 +1,23 @@
+{
+  "name": "@earvinpiamonte/mbx-cli",
+  "version": "0.0.1",
+  "description": "MBX CLI",
+  "bin": {
+    "mbx": "src/cli.js",
+    "mbx-cli": "src/cli.js"
+  },
+  "type": "module",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/earvinpiamonte/mbx-cli.git"
+  },
+  "author": "Noel Earvin Piamonte",
+  "license": "ISC",
+  "bugs": {
+    "url": "https://github.com/earvinpiamonte/mbx-cli/issues"
+  },
+  "homepage": "https://github.com/earvinpiamonte/mbx-cli#readme"
+}
