@@ -1,7 +1,7 @@
 {
   "name": "@earvinpiamonte/mbx-cli",
   "version": "0.0.1",
-  "description": "MBX CLI",
+  "description": "mbx-cli",
   "bin": {
     "mbx-cli": "src/cli.js"
   },
