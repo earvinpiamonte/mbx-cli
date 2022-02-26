@@ -2,7 +2,7 @@
 
 import { execSync } from 'child_process';
 import fs from 'fs';
-import * as readline from 'node:readline/promises';
+import * as readline from 'node:readline';
 import { stdin as input, stdout as output } from 'node:process';
 
 const [, , command, arg2] = process.argv;
@@ -138,16 +138,17 @@ const build = async (option) => {
     }
 
     const prompt = readline.createInterface({ input, output });
-    const answer = await prompt.question(
-      `The "build" command will remove the current instance of git on this project.\nProceed? y/n\n`
+    prompt.question(
+      `The "build" command will remove the current instance of git on this project.\nProceed? y/n\n`,
+      (answer) => {
+        const answerLowerCase = answer.toLowerCase();
+
+        if (answerLowerCase == 'y' || answerLowerCase == 'yes') {
+          option == update ? _reInstallPackages() : _freshInstallPackages();
+        }
+        prompt.close();
+      }
     );
-    const answerLowerCase = answer.toLowerCase();
-
-    if (answerLowerCase == 'y' || answerLowerCase == 'yes') {
-      option == update ? _reInstallPackages() : _freshInstallPackages();
-    }
-
-    prompt.close();
   } catch (error) {
     console.log(`Error: Failed to execute "build" command.`, error);
   }
