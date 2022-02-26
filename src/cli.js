@@ -65,19 +65,16 @@ const _updateLocalProperties = () => {
 
 const _reInstallPackages = () => {
   try {
-    if (!fs.existsSync(packageJson)) {
-      console.log('Warning: Cannot re-install packages. Please run "build".');
-      return;
+    if (fs.existsSync(packageJson)) {
+      _run(cleanUpCommand, {
+        logOnStart: `Info: Cleaning up common files ...`,
+        logOnComplete: `Success: Cleanup complete.`,
+      });
     }
   } catch (error) {
     console.log('Error: Failed to locate files required.', error);
     return;
   }
-
-  _run(cleanUpCommand, {
-    logOnStart: `Info: Cleaning up common files ...`,
-    logOnComplete: `Success: Cleanup complete.`,
-  });
 
   _run(cloneRepoCommand);
 
@@ -93,9 +90,9 @@ const _reInstallPackages = () => {
 
 const _freshInstallPackages = () => {
   try {
-    if (fs.existsSync(platforms) || fs.existsSync(packageJson)) {
+    if (fs.existsSync(platforms)) {
       console.log(
-        'Warning: Cannot fresh install packages. Plaese run "build -u" to update common files.'
+        'Warning: Cannot fresh install packages. Please run "build -u" to update common files.'
       );
       return;
     }
