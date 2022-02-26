@@ -13,7 +13,7 @@ const localProperties = './local.properties';
 const gulpRepository = '/var/www/html/mbx-gulp'; // TO DO: replace with https://github.com/earvinpiamonte/mbx-gulp.git
 
 const cloneRepoCommand = `git init && git remote add origin ${gulpRepository} && git pull origin main && rm -rf .git/`;
-const cleanUpCommand = `rm -rf node_modules/ && rm -rf .git/ && rm -rf .vscode/ && rm package.json package-lock.json .eslintrc.json gulpfile.js .gitignore README.md`;
+const cleanUpCommand = `rm -rf node_modules/ && rm -rf .git/ && rm -rf .vscode/ && rm package.json package-lock.json .eslintrc.json gulpfile.js .gitignore`;
 const npmInstallCommand = 'npm i';
 const removeCrosswalkCommand = `rm -rf ./platforms/android/src/org/crosswalk/engine/`;
 const antBuildCommand = `echo "ant build -f build.xml"`; // TO DO
@@ -74,6 +74,8 @@ const _reInstallPackages = () => {
     logOnComplete: `Success: npm packages installed.`,
   });
 
+  _run(`rm README.md`);
+
   console.log('Success: Update common files complete.');
 };
 
@@ -94,6 +96,8 @@ const _freshInstallPackages = () => {
     logOnStart: `Info: Installing npm packages ...`,
     logOnComplete: `Success: npm packages installed.`,
   });
+
+  _run(`rm README.md`);
 
   console.log('Success: Build complete.');
 };
