@@ -27,6 +27,10 @@ npx mbx-cli build -u
 1. Run `npx mbx-cli build`.
 1. Run the project Activity on Eclipse.
 
+## Notes
+
+Use `npx mbx-cli build` when you haven't run `ant build...` command yet, use `npx mbx-cli build -u` otherwise.
+
 ## Maintainer
 
 Noel Earvin Piamonte
