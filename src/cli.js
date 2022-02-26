@@ -95,7 +95,7 @@ const _freshInstallPackages = () => {
     logOnComplete: `Success: npm packages installed.`,
   });
 
-  console.log('Succes: Build complete.');
+  console.log('Success: Build complete.');
 };
 
 const init = (workspace) => {
