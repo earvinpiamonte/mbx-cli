@@ -11,6 +11,7 @@ const { ANDROID_HOME } = process.env;
 const buildXml = './build.xml';
 const gulpRepository = '/var/www/html/mbx-gulp'; // TO DO: replace with https://github.com/earvinpiamonte/mbx-gulp.git
 const localProperties = './local.properties';
+const packageJson = './package.json';
 const platforms = './platforms';
 
 const antBuildCommand = `echo "ant build -f build.xml"`; // TO DO
@@ -25,7 +26,7 @@ const _main = (command, arg2 = null) => {
     return;
   }
 
-  console.log(`Error: Invalid command "${command}."`);
+  console.log(`Error: Invalid command "${command}"`);
 };
 
 const _run = (command, options = {}) => {
@@ -63,6 +64,16 @@ const _updateLocalProperties = () => {
 };
 
 const _reInstallPackages = () => {
+  try {
+    if (!fs.existsSync(packageJson)) {
+      console.log('Warning: Cannot re-install packages. Please run "build".');
+      return;
+    }
+  } catch (error) {
+    console.log('Error: Failed to locate files required.', error);
+    return;
+  }
+
   _run(cleanUpCommand, {
     logOnStart: `Info: Cleaning up common files ...`,
     logOnComplete: `Success: Cleanup complete.`,
@@ -82,14 +93,14 @@ const _reInstallPackages = () => {
 
 const _freshInstallPackages = () => {
   try {
-    if (fs.existsSync(platforms)) {
+    if (fs.existsSync(platforms) || fs.existsSync(packageJson)) {
       console.log(
-        'Warning: Running "build" again without an option is not allowed. Run it with "-u" option to update common files.'
+        'Warning: Cannot fresh install packages. Plaese run "build -u" to update common files.'
       );
       return;
     }
   } catch (error) {
-    console.log('Error: Failed to check for "platforms/".', error);
+    console.log('Error: Failed to locate files required.', error);
     return;
   }
 
