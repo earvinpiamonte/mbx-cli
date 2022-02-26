@@ -1,22 +1,23 @@
 #!/usr/bin/env node
 
-import { execSync } from 'child_process';
-import fs from 'fs';
 import * as readline from 'node:readline';
+import fs from 'fs';
+import { execSync } from 'child_process';
 import { stdin as input, stdout as output } from 'node:process';
 
 const [, , command, arg2] = process.argv;
 const { ANDROID_HOME } = process.env;
 
 const buildXml = './build.xml';
-const localProperties = './local.properties';
 const gulpRepository = '/var/www/html/mbx-gulp'; // TO DO: replace with https://github.com/earvinpiamonte/mbx-gulp.git
+const localProperties = './local.properties';
+const platforms = './platforms';
 
-const cloneRepoCommand = `git init && git remote add origin ${gulpRepository} && git pull origin main && rm -rf .git/`;
+const antBuildCommand = `echo "ant build -f build.xml"`; // TO DO
 const cleanUpCommand = `rm -rf node_modules/ && rm -rf .git/ && rm -rf .vscode/ && rm package.json package-lock.json .eslintrc.json gulpfile.js .gitignore`;
+const cloneRepoCommand = `git init && git remote add origin ${gulpRepository} && git pull origin main && rm -rf .git/`;
 const npmInstallCommand = 'npm i';
 const removeCrosswalkCommand = `rm -rf ./platforms/android/src/org/crosswalk/engine/`;
-const antBuildCommand = `echo "ant build -f build.xml"`; // TO DO
 
 const _main = (command, arg2 = null) => {
   if (commands[command]) {
@@ -80,6 +81,17 @@ const _reInstallPackages = () => {
 };
 
 const _freshInstallPackages = () => {
+  try {
+    if (fs.existsSync(platforms)) {
+      console.log(
+        'Warning: Running "build" again without an option is not allowed. Run it with "-u" option to update common files.'
+      );
+      return;
+    }
+  } catch (error) {
+    console.log('Error: Failed to check for "platforms/".', error);
+    return;
+  }
   _updateLocalProperties();
 
   _run(antBuildCommand, {
