@@ -26,7 +26,7 @@ To update [mbx-gulp](https://github.com/earvinpiamonte/mbx-gulp), add `-u` optio
 npx mbx-cli build -u
 ```
 
-## Recommended workflow
+## Workflow
 
 1. Open up terminal run `npx mbx-cli init APP_2022-05`
 1. Open Eclipse IDE and choose the newly created `APP_2022-05` workspace.
