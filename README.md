@@ -1,14 +1,16 @@
 ## mbx-cli
 
-### Create a workspace folder
+### Usage
+
+Create a workspace folder, and clone [mbx-gulp](https://github.com/earvinpiamonte/mbx-gulp) at `APP_WORKSPACE_NAME/app/`:
 
 ```
 npx mbx-cli init APP_WORKSPACE_NAME
 ```
 
-Clones project common files at `APP_WORKSPACE_NAME/app/`.
-
 ### Build project
+
+Execute `ant build...` and install npm packages:
 
 ```
 cd APP_WORKSPACE_NAME/app/
@@ -18,13 +20,20 @@ cd APP_WORKSPACE_NAME/app/
 npx mbx-cli build
 ```
 
-Executes `ant build...` and installs npm packages.
-
-To update the common files such as `package.json`, `.eslintrc.json`, add `-u` option on the build command.
+To update [mbx-gulp](https://github.com/earvinpiamonte/mbx-gulp), add `-u` option on the build command:
 
 ```
 npx mbx-cli build -u
 ```
+
+## Recommended workflow
+
+1. Open up terminal run `npx mbx-cli init APP_2022-05`
+1. Open Eclipse IDE and choose the newly created `APP_2022-05` workspace.
+1. Checkout app project.
+1. Open again the terminal and run `cd APP_2022-05/app/`.
+1. Run `npx mbx-cli build`.
+1. Run the project Activity on Eclipse.
 
 ## Maintainer
 
