@@ -3,7 +3,6 @@
   "version": "0.0.1",
   "description": "MBX CLI",
   "bin": {
-    "mbx": "src/cli.js",
     "mbx-cli": "src/cli.js"
   },
   "type": "module",
