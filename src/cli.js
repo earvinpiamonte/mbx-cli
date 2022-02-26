@@ -10,7 +10,7 @@ const { ANDROID_HOME } = process.env;
 
 const buildXml = './build.xml';
 const localProperties = './local.properties';
-const gulpRepository = '/var/www/html/mscm-ionic-gulp'; // TO DO: replace with https://github.com/earvinpiamonte/mbx-gulp.git
+const gulpRepository = '/var/www/html/mbx-gulp'; // TO DO: replace with https://github.com/earvinpiamonte/mbx-gulp.git
 
 const cloneRepoCommand = `git init && git remote add origin ${gulpRepository} && git pull origin main && rm -rf .git/`;
 const cleanUpCommand = `rm -rf node_modules/ && rm -rf .git/ && rm -rf .vscode/ && rm package.json package-lock.json .eslintrc.json gulpfile.js .gitignore`;
