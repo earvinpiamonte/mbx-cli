@@ -68,7 +68,7 @@ const _reInstallPackages = () => {
     logOnComplete: `Success: Cleanup complete.`,
   });
 
-  _run(`git init && ${cloneRepoCommand}`);
+  _run(cloneRepoCommand);
 
   _run(npmInstallCommand, {
     logOnStart: `Info: Installing npm packages ...`,
@@ -92,6 +92,7 @@ const _freshInstallPackages = () => {
     console.log('Error: Failed to check for "platforms/".', error);
     return;
   }
+
   _updateLocalProperties();
 
   _run(antBuildCommand, {
@@ -102,6 +103,12 @@ const _freshInstallPackages = () => {
   _run(removeCrosswalkCommand, {
     logOnStart: `Info: Removing "org.crosswalk.engine" ...`,
     logOnComplete: `Success: "org.crosswalk.engine" has been removed.`,
+  });
+
+  _run(cloneRepoCommand, {
+    logOnStart: `Info: Cloning project ...`,
+    logOnComplete:
+      'Success: Workspace is now ready! Open Eclipse and checkout a project.',
   });
 
   _run(npmInstallCommand, {
@@ -116,18 +123,8 @@ const _freshInstallPackages = () => {
 
 const init = (workspace) => {
   if (workspace) {
-    const [workspaceProject] = workspace.split('_');
-    const newDirectory = `${workspace}/${workspaceProject.toLowerCase()}`;
-
-    _run(`mkdir -p ${newDirectory}`, {
-      logOnStart: `Info: Creating workspace "${newDirectory}" ...`,
+    _run(`mkdir -p ${workspace}`, {
       logOnComplete: 'Success: Workspace created!',
-    });
-
-    _run(`cd ${newDirectory} && git init && ${cloneRepoCommand}`, {
-      logOnStart: `Info: Cloning project ...`,
-      logOnComplete:
-        'Success: Workspace is now ready! Open Eclipse and checkout a project.',
     });
 
     return;
