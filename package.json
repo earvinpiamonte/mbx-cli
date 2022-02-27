@@ -1,5 +1,5 @@
 {
-  "name": "@earvinpiamonte/mbx-cli",
+  "name": "mbx-cli",
   "version": "0.0.1",
   "description": "mbx-cli",
   "bin": {
