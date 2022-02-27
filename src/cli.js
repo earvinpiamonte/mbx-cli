@@ -8,13 +8,13 @@ const { ANDROID_HOME } = process.env;
 
 const buildXml = './build.xml';
 const git = './.git';
-const gulpRepository = '/var/www/html/mbx-gulp'; // TO DO: replace with https://github.com/earvinpiamonte/mbx-gulp.git
+const gulpRepository = 'https://github.com/earvinpiamonte/mbx-gulp.git';
 const localProperties = './local.properties';
 const packageJson = './package.json';
 const platforms = './platforms';
 const tempGit = './temp.git';
 
-const antBuildCommand = `echo "ant build -f build.xml"`; // TO DO
+const antBuildCommand = `ant build -f build.xml`;
 const cleanUpCommand = `rm -rf node_modules/ && rm -rf .vscode/ && rm package.json package-lock.json .eslintrc.json gulpfile.js .gitignore`;
 const cloneRepoCommand = `git init && git remote add origin ${gulpRepository} && git pull origin main && rm -rf .git`;
 const npmInstallCommand = 'npm i';
