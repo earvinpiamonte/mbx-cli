@@ -1,22 +1,22 @@
 #!/usr/bin/env node
 
-import * as readline from 'node:readline';
 import fs from 'fs';
 import { execSync } from 'child_process';
-import { stdin as input, stdout as output } from 'node:process';
 
 const [, , command, arg2] = process.argv;
 const { ANDROID_HOME } = process.env;
 
 const buildXml = './build.xml';
+const git = './.git';
 const gulpRepository = '/var/www/html/mbx-gulp'; // TO DO: replace with https://github.com/earvinpiamonte/mbx-gulp.git
 const localProperties = './local.properties';
 const packageJson = './package.json';
 const platforms = './platforms';
+const tempGit = './temp.git';
 
 const antBuildCommand = `echo "ant build -f build.xml"`; // TO DO
-const cleanUpCommand = `rm -rf node_modules/ && rm -rf .git/ && rm -rf .vscode/ && rm package.json package-lock.json .eslintrc.json gulpfile.js .gitignore`;
-const cloneRepoCommand = `git init && git remote add origin ${gulpRepository} && git pull origin main && rm -rf .git/`;
+const cleanUpCommand = `rm -rf node_modules/ && rm -rf .vscode/ && rm package.json package-lock.json .eslintrc.json gulpfile.js .gitignore`;
+const cloneRepoCommand = `git init && git remote add origin ${gulpRepository} && git pull origin main && rm -rf .git`;
 const npmInstallCommand = 'npm i';
 const removeCrosswalkCommand = `rm -rf ./platforms/android/src/org/crosswalk/engine/`;
 
@@ -63,7 +63,49 @@ const _updateLocalProperties = () => {
   }
 };
 
+const backupGit = () => {
+  try {
+    fs.rename(git, tempGit, (error) => {
+      error &&
+        console.log('Error: Failed to backup current git instance.', error);
+      return false;
+    });
+  } catch (error) {
+    console.log('Error: Failed to backup current git instance.', error);
+    return false;
+  }
+
+  return true;
+};
+
+const restoreGit = () => {
+  try {
+    fs.rename(tempGit, git, (error) => {
+      error &&
+        console.log('Error: Failed to backup current git instance.', error);
+      return false;
+    });
+  } catch (error) {
+    console.log('Error: Failed to restore git instance.', error);
+    return false;
+  }
+
+  return true;
+};
+
 const _reInstallPackages = () => {
+  try {
+    if (!fs.existsSync(platforms)) {
+      console.log(
+        'Warning: Cannot re-install install packages. Please run "build" without "-u" option.'
+      );
+      return;
+    }
+  } catch (error) {
+    console.log('Error: Failed to locate files required.', error);
+    return;
+  }
+
   try {
     if (fs.existsSync(packageJson)) {
       _run(cleanUpCommand, {
@@ -71,6 +113,13 @@ const _reInstallPackages = () => {
         logOnComplete: `Success: Cleanup complete.`,
       });
     }
+  } catch (error) {
+    console.log('Error: Failed to locate files required.', error);
+    return;
+  }
+
+  try {
+    fs.existsSync(git) && backupGit();
   } catch (error) {
     console.log('Error: Failed to locate files required.', error);
     return;
@@ -85,12 +134,19 @@ const _reInstallPackages = () => {
 
   _run(`rm README.md`);
 
+  try {
+    fs.existsSync(tempGit) && restoreGit();
+  } catch (error) {
+    console.log('Error: Failed to locate files required.', error);
+    return;
+  }
+
   console.log('Success: Update common files complete.');
 };
 
 const _freshInstallPackages = () => {
   try {
-    if (fs.existsSync(platforms)) {
+    if (fs.existsSync(platforms) || fs.existsSync(packageJson)) {
       console.log(
         'Warning: Cannot fresh install packages. Please run "build -u" to update common files.'
       );
@@ -113,6 +169,13 @@ const _freshInstallPackages = () => {
     logOnComplete: `Success: "org.crosswalk.engine" has been removed.`,
   });
 
+  try {
+    fs.existsSync(git) && backupGit();
+  } catch (error) {
+    console.log('Error: Failed to locate files required.', error);
+    return;
+  }
+
   _run(cloneRepoCommand, {
     logOnStart: `Info: Cloning project ...`,
     logOnComplete:
@@ -125,6 +188,13 @@ const _freshInstallPackages = () => {
   });
 
   _run(`rm README.md`);
+
+  try {
+    fs.existsSync(tempGit) && restoreGit();
+  } catch (error) {
+    console.log('Error: Failed to locate files required.', error);
+    return;
+  }
 
   console.log('Success: Build complete.');
 };
@@ -153,23 +223,7 @@ const build = async (option) => {
       return;
     }
 
-    if (!fs.existsSync('.git/')) {
-      option == update ? _reInstallPackages() : _freshInstallPackages();
-      return;
-    }
-
-    const prompt = readline.createInterface({ input, output });
-    prompt.question(
-      `The "build" command will remove the current instance of git on this project.\nProceed? y/n\n`,
-      (answer) => {
-        const answerLowerCase = answer.toLowerCase();
-
-        if (answerLowerCase == 'y' || answerLowerCase == 'yes') {
-          option == update ? _reInstallPackages() : _freshInstallPackages();
-        }
-        prompt.close();
-      }
-    );
+    option == update ? _reInstallPackages() : _freshInstallPackages();
   } catch (error) {
     console.log(`Error: Failed to execute "build" command.`, error);
   }
