@@ -6,19 +6,36 @@ import { execSync } from 'child_process';
 const [, , command, arg2] = process.argv;
 const { ANDROID_HOME } = process.env;
 
-const buildXml = './build.xml';
-const git = './.git';
 const gulpRepository = 'https://github.com/earvinpiamonte/mbx-gulp.git';
-const localProperties = './local.properties';
-const packageJson = './package.json';
-const platforms = './platforms';
-const tempGit = './temp.git';
 
 const antBuildCommand = `ant build -f build.xml`;
-const cleanUpCommand = `rm -rf node_modules/ && rm -rf .vscode/ && rm package.json package-lock.json .eslintrc.json gulpfile.js .gitignore`;
-const cloneRepoCommand = `git init && git remote add origin ${gulpRepository} && git pull origin main && rm -rf .git`;
+const cloneRepoCommand = `git init && git remote add origin ${gulpRepository} && git pull origin main`;
 const npmInstallCommand = 'npm i';
-const removeCrosswalkCommand = `rm -rf ./platforms/android/src/org/crosswalk/engine/`;
+
+const buildXml = 'build.xml';
+const crosswalkEngine = 'platforms/android/src/org/crosswalk/engine';
+const eslintJson = '.eslintrc.json';
+const git = '.git';
+const gitIgnore = '.gitignore';
+const gulpFile = 'gulpfile.js';
+const localProperties = 'local.properties';
+const nodeModules = 'node_modules';
+const packageJson = 'package.json';
+const packageLockJson = 'package-lock.json';
+const platforms = 'platforms';
+const readme = 'README.md';
+const tempGit = 'temp.git';
+const vsCode = '.vscode';
+
+const commonFiles = [
+  eslintJson,
+  gitIgnore,
+  gulpFile,
+  nodeModules,
+  packageJson,
+  packageLockJson,
+  vsCode,
+];
 
 const _main = (command, arg2 = null) => {
   if (commands[command]) {
@@ -63,81 +80,89 @@ const _updateLocalProperties = () => {
   }
 };
 
-const backupGit = () => {
+const _backupGit = () => {
   try {
     fs.rename(git, tempGit, (error) => {
       error &&
-        console.log('Error: Failed to backup current git instance.', error);
+        console.log('Error: Failed to backup current Git repository.', error);
       return false;
     });
   } catch (error) {
-    console.log('Error: Failed to backup current git instance.', error);
+    console.log('Error: Failed to backup current Git repository.', error);
     return false;
   }
 
   return true;
 };
 
-const restoreGit = () => {
+const _restoreGit = () => {
   try {
     fs.rename(tempGit, git, (error) => {
       error &&
-        console.log('Error: Failed to backup current git instance.', error);
+        console.log('Error: Failed to restore current Git repository.', error);
       return false;
     });
   } catch (error) {
-    console.log('Error: Failed to restore git instance.', error);
+    console.log('Error: Failed to restore Git repository.', error);
     return false;
   }
 
   return true;
+};
+
+const _removeCommonFiles = () => {
+  commonFiles.forEach(
+    (path) =>
+      fs.existsSync(path) && fs.rmSync(path, { force: true, recursive: true })
+  );
 };
 
 const _reInstallPackages = () => {
   try {
-    if (!fs.existsSync(platforms)) {
-      console.log(
-        'Warning: Cannot re-install install packages. Please run "build" without "-u" option.'
-      );
-      return;
-    }
+    fs.existsSync(packageJson) && _removeCommonFiles();
+    console.log('Success: Removed common files.');
   } catch (error) {
     console.log('Error: Failed to locate files required.', error);
     return;
   }
 
   try {
-    if (fs.existsSync(packageJson)) {
-      _run(cleanUpCommand, {
-        logOnStart: `Info: Cleaning up common files ...`,
-        logOnComplete: `Success: Cleanup complete.`,
-      });
-    }
+    fs.existsSync(git) && _backupGit();
+    console.log('Success: Backup of Git repository saved.');
   } catch (error) {
-    console.log('Error: Failed to locate files required.', error);
-    return;
-  }
-
-  try {
-    fs.existsSync(git) && backupGit();
-  } catch (error) {
-    console.log('Error: Failed to locate files required.', error);
+    console.log('Error: Failed to backup Git repository.', error);
     return;
   }
 
   _run(cloneRepoCommand);
+
+  try {
+    fs.existsSync(git) && fs.rmSync(git, { force: true, recursive: true });
+    console.log('Success: Removed common files Git repository.');
+  } catch (error) {
+    console.log('Error: Failed to cleanup common files Git repository.', error);
+    return;
+  }
 
   _run(npmInstallCommand, {
     logOnStart: `Info: Installing npm packages ...`,
     logOnComplete: `Success: npm packages installed.`,
   });
 
-  _run(`rm README.md`);
+  try {
+    fs.existsSync(readme) &&
+      fs.rmSync(readme, { force: true, recursive: true });
+    console.log(`Success: Removed "${readme}".`);
+  } catch (error) {
+    console.log(`Error: Failed to remove "${readme}".`, error);
+    return;
+  }
 
   try {
-    fs.existsSync(tempGit) && restoreGit();
+    fs.existsSync(tempGit) && _restoreGit();
+    console.log('Success: Restored previous Git repository.');
   } catch (error) {
-    console.log('Error: Failed to locate files required.', error);
+    console.log('Error: Failed to restore previous Git repository.', error);
     return;
   }
 
@@ -146,9 +171,9 @@ const _reInstallPackages = () => {
 
 const _freshInstallPackages = () => {
   try {
-    if (fs.existsSync(platforms) || fs.existsSync(packageJson)) {
+    if (fs.existsSync(platforms)) {
       console.log(
-        'Warning: Cannot fresh install packages. Please run "build -u" to update common files.'
+        'Warning: Cannot build/ fresh install packages. Please run "build -u" to update common files.'
       );
       return;
     }
@@ -164,35 +189,60 @@ const _freshInstallPackages = () => {
     logOnComplete: `Success: ant build complete".`,
   });
 
-  _run(removeCrosswalkCommand, {
-    logOnStart: `Info: Removing "org.crosswalk.engine" ...`,
-    logOnComplete: `Success: "org.crosswalk.engine" has been removed.`,
-  });
+  try {
+    fs.existsSync(crosswalkEngine) &&
+      fs.rmSync(crosswalkEngine, { force: true, recursive: true });
+    console.log(`Success: Removed "${crosswalkEngine}".`);
+  } catch (error) {
+    console.log(`Error: Failed to remove "${crosswalkEngine}".`, error);
+    return;
+  }
 
   try {
-    fs.existsSync(git) && backupGit();
+    fs.existsSync(packageJson) && _removeCommonFiles();
+    console.log('Success: Removed common files.');
   } catch (error) {
     console.log('Error: Failed to locate files required.', error);
     return;
   }
 
-  _run(cloneRepoCommand, {
-    logOnStart: `Info: Cloning project ...`,
-    logOnComplete:
-      'Success: Workspace is now ready! Open Eclipse and checkout a project.',
-  });
+  try {
+    fs.existsSync(git) && _backupGit();
+    console.log('Success: Backup of Git repository saved.');
+  } catch (error) {
+    console.log('Error: Failed to backup Git repository.', error);
+    return;
+  }
+
+  _run(cloneRepoCommand);
+
+  try {
+    fs.existsSync(git) && fs.rmSync(git, { force: true, recursive: true });
+    console.log('Success: Removed common files Git repository.');
+  } catch (error) {
+    console.log('Error: Failed to cleanup common files Git repository.', error);
+    return;
+  }
 
   _run(npmInstallCommand, {
     logOnStart: `Info: Installing npm packages ...`,
     logOnComplete: `Success: npm packages installed.`,
   });
 
-  _run(`rm README.md`);
+  try {
+    fs.existsSync(readme) &&
+      fs.rmSync(readme, { force: true, recursive: true });
+    console.log(`Success: Removed "${readme}".`);
+  } catch (error) {
+    console.log(`Error: Failed to remove "${readme}".`, error);
+    return;
+  }
 
   try {
-    fs.existsSync(tempGit) && restoreGit();
+    fs.existsSync(tempGit) && _restoreGit();
+    console.log('Success: Restored previous Git repository.');
   } catch (error) {
-    console.log('Error: Failed to locate files required.', error);
+    console.log('Error: Failed to restore previous Git repository.', error);
     return;
   }
 
@@ -201,8 +251,13 @@ const _freshInstallPackages = () => {
 
 const init = (workspace) => {
   if (workspace) {
-    _run(`mkdir -p ${workspace}`, {
-      logOnComplete: 'Success: Workspace created!',
+    fs.mkdir(workspace, { recursive: true }, (error) => {
+      if (error) {
+        console.log('Error: Failed to create workspace directory.');
+        return;
+      }
+
+      console.log('Success: Workspace created!');
     });
 
     return;
