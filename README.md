@@ -10,13 +10,7 @@ cd APP_WORKSPACE_2022-01/app/
 npx mbx-cli build
 ```
 
-Executes `ant build...`, clones [mbx-gulp](https://github.com/earvinpiamonte/mbx-gulp) to current app directory and installs npm packages.
-
-To update [mbx-gulp](https://github.com/earvinpiamonte/mbx-gulp) on the current app project, add `-u` option on the build command:
-
-```
-npx mbx-cli build -u
-```
+The command updates `sdk.dir` to `$ANDROID_HOME` on `local.properties`, executes `ant build ...`, clones [mbx-gulp](https://github.com/earvinpiamonte/mbx-gulp) to the current app directory and installs npm packages.
 
 ## Recommended workflow
 
@@ -27,9 +21,13 @@ npx mbx-cli build -u
 1. Run `npx mbx-cli build`.
 1. Run the project Activity on Eclipse.
 
-## Notes
+## Update `mbx-gulp`
 
-Use `npx mbx-cli build` when you haven't run `ant build...` command yet, use `npx mbx-cli build -u` otherwise.
+To update [mbx-gulp](https://github.com/earvinpiamonte/mbx-gulp) on the current app project, add `-u` option on the build command:
+
+```
+npx mbx-cli build -u
+```
 
 ## Maintainer
 
