@@ -1,6 +1,6 @@
 ## mbx-cli
 
-### Usage
+## Usage
 
 ```
 cd APP_WORKSPACE_2022-01/app/
