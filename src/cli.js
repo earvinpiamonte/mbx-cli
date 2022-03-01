@@ -8,10 +8,6 @@ const { ANDROID_HOME } = process.env;
 
 const gulpRepository = 'https://github.com/earvinpiamonte/mbx-gulp.git';
 
-const antBuildCommand = `ant build -f build.xml`;
-const cloneRepoCommand = `git init && git remote add origin ${gulpRepository} && git pull origin main`;
-const npmInstallCommand = 'npm i';
-
 const buildXml = 'build.xml';
 const crosswalkEngine = 'platforms/android/src/org/crosswalk/engine';
 const eslintJson = '.eslintrc.json';
@@ -26,6 +22,10 @@ const platforms = 'platforms';
 const readme = 'README.md';
 const tempGit = 'temp.git';
 const vsCode = '.vscode';
+
+const antBuildCommand = `ant build -f ${buildXml}`;
+const cloneRepoCommand = `git init && git remote add origin ${gulpRepository} && git pull origin main`;
+const npmInstallCommand = 'npm i';
 
 const commonFiles = [
   eslintJson,
@@ -119,16 +119,18 @@ const _removeCommonFiles = () => {
 
 const _reInstallPackages = () => {
   try {
-    fs.existsSync(packageJson) && _removeCommonFiles();
-    console.log('Success: Removed common files.');
+    fs.existsSync(packageJson) &&
+      _removeCommonFiles() &&
+      console.log('Success: Removed common files.');
   } catch (error) {
     console.log('Error: Failed to locate files required.', error);
     return;
   }
 
   try {
-    fs.existsSync(git) && _backupGit();
-    console.log('Success: Backup of Git repository saved.');
+    fs.existsSync(git) &&
+      _backupGit() &&
+      console.log('Success: Backup of Git repository saved.');
   } catch (error) {
     console.log('Error: Failed to backup Git repository.', error);
     return;
@@ -137,8 +139,9 @@ const _reInstallPackages = () => {
   _run(cloneRepoCommand);
 
   try {
-    fs.existsSync(git) && fs.rmSync(git, { force: true, recursive: true });
-    console.log('Success: Removed common files Git repository.');
+    fs.existsSync(git) &&
+      fs.rmSync(git, { force: true, recursive: true }) &&
+      console.log('Success: Removed common files Git repository.');
   } catch (error) {
     console.log('Error: Failed to cleanup common files Git repository.', error);
     return;
@@ -151,16 +154,17 @@ const _reInstallPackages = () => {
 
   try {
     fs.existsSync(readme) &&
-      fs.rmSync(readme, { force: true, recursive: true });
-    console.log(`Success: Removed "${readme}".`);
+      fs.rmSync(readme, { force: true, recursive: true }) &&
+      console.log(`Success: Removed "${readme}".`);
   } catch (error) {
     console.log(`Error: Failed to remove "${readme}".`, error);
     return;
   }
 
   try {
-    fs.existsSync(tempGit) && _restoreGit();
-    console.log('Success: Restored previous Git repository.');
+    fs.existsSync(tempGit) &&
+      _restoreGit() &&
+      console.log('Success: Restored previous Git repository.');
   } catch (error) {
     console.log('Error: Failed to restore previous Git repository.', error);
     return;
@@ -171,7 +175,7 @@ const _reInstallPackages = () => {
 
 const _freshInstallPackages = () => {
   try {
-    if (fs.existsSync(platforms)) {
+    if (fs.existsSync(packageJson)) {
       console.log(
         'Warning: Cannot build/ fresh install packages. Please run "build -u" to update common files.'
       );
@@ -191,24 +195,26 @@ const _freshInstallPackages = () => {
 
   try {
     fs.existsSync(crosswalkEngine) &&
-      fs.rmSync(crosswalkEngine, { force: true, recursive: true });
-    console.log(`Success: Removed "${crosswalkEngine}".`);
+      fs.rmSync(crosswalkEngine, { force: true, recursive: true }) &&
+      console.log(`Success: Removed "${crosswalkEngine}".`);
   } catch (error) {
     console.log(`Error: Failed to remove "${crosswalkEngine}".`, error);
     return;
   }
 
   try {
-    fs.existsSync(packageJson) && _removeCommonFiles();
-    console.log('Success: Removed common files.');
+    fs.existsSync(packageJson) &&
+      _removeCommonFiles() &&
+      console.log('Success: Removed common files.');
   } catch (error) {
     console.log('Error: Failed to locate files required.', error);
     return;
   }
 
   try {
-    fs.existsSync(git) && _backupGit();
-    console.log('Success: Backup of Git repository saved.');
+    fs.existsSync(git) &&
+      _backupGit() &&
+      console.log('Success: Backup of Git repository saved.');
   } catch (error) {
     console.log('Error: Failed to backup Git repository.', error);
     return;
@@ -217,8 +223,9 @@ const _freshInstallPackages = () => {
   _run(cloneRepoCommand);
 
   try {
-    fs.existsSync(git) && fs.rmSync(git, { force: true, recursive: true });
-    console.log('Success: Removed common files Git repository.');
+    fs.existsSync(git) &&
+      fs.rmSync(git, { force: true, recursive: true }) &&
+      console.log('Success: Removed common files Git repository.');
   } catch (error) {
     console.log('Error: Failed to cleanup common files Git repository.', error);
     return;
@@ -231,16 +238,17 @@ const _freshInstallPackages = () => {
 
   try {
     fs.existsSync(readme) &&
-      fs.rmSync(readme, { force: true, recursive: true });
-    console.log(`Success: Removed "${readme}".`);
+      fs.rmSync(readme, { force: true, recursive: true }) &&
+      console.log(`Success: Removed "${readme}".`);
   } catch (error) {
     console.log(`Error: Failed to remove "${readme}".`, error);
     return;
   }
 
   try {
-    fs.existsSync(tempGit) && _restoreGit();
-    console.log('Success: Restored previous Git repository.');
+    fs.existsSync(tempGit) &&
+      _restoreGit() &&
+      console.log('Success: Restored previous Git repository.');
   } catch (error) {
     console.log('Error: Failed to restore previous Git repository.', error);
     return;
