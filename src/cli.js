@@ -18,7 +18,7 @@ const localProperties = 'local.properties';
 const nodeModules = 'node_modules';
 const packageJson = 'package.json';
 const packageLockJson = 'package-lock.json';
-const platforms = 'platforms';
+const prettierIgnore = '.prettierignore';
 const readme = 'README.md';
 const tempGit = 'temp.git';
 const vsCode = '.vscode';
@@ -34,6 +34,7 @@ const commonFiles = [
   nodeModules,
   packageJson,
   packageLockJson,
+  prettierIgnore,
   vsCode,
 ];
 
