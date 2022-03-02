@@ -1,6 +1,6 @@
 {
   "name": "mbx-cli",
-  "version": "0.1.5",
+  "version": "0.1.6",
   "description": "mbx-cli",
   "bin": {
     "mbx-cli": "src/cli.js"
