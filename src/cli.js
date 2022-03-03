@@ -25,7 +25,7 @@ const vsCode = '.vscode';
 
 const antBuildCommand = `ant -f ${buildXml} copy-release`;
 const cloneRepoCommand = `git init && git remote add origin ${gulpRepository} && git pull origin main`;
-const npmInstallCommand = 'npm install --global gulp-cli && npm i';
+const npmInstallCommand = 'npm i -g gulp-cli && npm i -g eslint && npm i';
 
 const commonFiles = [
   eslintJson,
