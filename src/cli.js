@@ -23,7 +23,7 @@ const readme = 'README.md';
 const tempGit = 'temp.git';
 const vsCode = '.vscode';
 
-const antBuildCommand = `ant build -f ${buildXml}`;
+const antBuildCommand = `ant -f ${buildXml} copy-release`;
 const cloneRepoCommand = `git init && git remote add origin ${gulpRepository} && git pull origin main`;
 const npmInstallCommand = 'npm install --global gulp-cli && npm i';
 
@@ -192,8 +192,8 @@ const _freshInstallPackages = () => {
   _updateLocalProperties();
 
   _run(antBuildCommand, {
-    logOnStart: `Info: ant build started ...`,
-    logOnComplete: `Success: ant build complete".`,
+    logOnStart: `Info: ant copy-release started ...`,
+    logOnComplete: `Success: ant copy-release complete".`,
   });
 
   try {
