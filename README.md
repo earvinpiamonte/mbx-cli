@@ -10,7 +10,7 @@ cd APP_WORKSPACE_2022-01/app/
 npx mbx-cli build
 ```
 
-The command updates `sdk.dir` to `$ANDROID_HOME` on `local.properties`, executes `ant build ...`, clones [mbx-gulp](https://github.com/earvinpiamonte/mbx-gulp) to the current app directory and installs npm packages.
+The command updates `sdk.dir` to `$ANDROID_HOME` on `local.properties`, executes `ant ...`, clones [mbx-gulp](https://github.com/earvinpiamonte/mbx-gulp) to the current app directory and installs npm packages.
 
 ## Recommended workflow
 
