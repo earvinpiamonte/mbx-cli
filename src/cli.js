@@ -2,6 +2,7 @@
 
 import fs from 'fs';
 import { execSync } from 'child_process';
+import path from 'path';
 
 const [, , command, arg2] = process.argv;
 const { ANDROID_HOME } = process.env;
@@ -70,7 +71,7 @@ const _updateLocalProperties = () => {
 
     const newLocalPropertiesContents = localPropertiesContents.replace(
       /sdk.dir=.*/,
-      `sdk.dir=${ANDROID_HOME}`
+      `sdk.dir=${ANDROID_HOME.split(path.sep).join(path.posix.sep)}`
     );
 
     fs.writeFileSync(localProperties, newLocalPropertiesContents, 'utf8');
