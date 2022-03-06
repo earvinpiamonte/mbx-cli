@@ -10,20 +10,30 @@ cd APP_WORKSPACE_2022-01/app/
 npx mbx-cli build
 ```
 
-The command updates `sdk.dir` to `$ANDROID_HOME` on `local.properties`, executes `ant ...`, clones [mbx-gulp](https://github.com/earvinpiamonte/mbx-gulp) to the current app directory and installs npm packages.
+The `build` command does the ff under the hood:
+
+1. Updates `sdk.dir` value to `ANDROID_HOME` on `local.properties`
+1. Executes `ant`
+1. Removes `org.crosswalk.engine`
+1. Clones [mbx-gulp](https://github.com/earvinpiamonte/mbx-gulp) template and updates its dependencies (includes: `gulp-cli`, `eslint`)
+1. Installs ESLint VS Code extension
 
 ## Recommended workflow
 
 1. Open up terminal run `mkdir APP_WORKSPACE_2022-01`
 1. Open Eclipse IDE and choose the newly created `APP_WORKSPACE_2022-01` workspace.
-1. Checkout app project.
-1. Open again the terminal and run `cd APP_WORKSPACE_2022-01/app/`.
-1. Run `npx mbx-cli build`.
-1. Run the project Activity on Eclipse.
+1. Checkout app project
+1. Open the terminal once again and do `cd APP_WORKSPACE_2022-01/app/`
+1. Run `npx mbx-cli build`
+1. Run the project Activity on Eclipse IDE
 
-## Update `mbx-gulp`
+## Update or add `mbx-gulp` template
 
-To update [mbx-gulp](https://github.com/earvinpiamonte/mbx-gulp) on the current app project, add `-u` option on the build command:
+To update or add [mbx-gulp](https://github.com/earvinpiamonte/mbx-gulp) on your current app project, execute the `build` command with the `-u` option:
+
+```
+cd APP_WORKSPACE_2022-01/app/
+```
 
 ```
 npx mbx-cli build -u
