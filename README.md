@@ -18,7 +18,7 @@ The `build` command does the ff under the hood:
 1. Clones [mbx-gulp](https://github.com/earvinpiamonte/mbx-gulp) template and updates its dependencies (includes: `gulp-cli`, `eslint`)
 1. Installs ESLint VS Code extension
 
-## Recommended workflow
+## Recommended setup on project checkout
 
 1. Open up terminal run `mkdir APP_WORKSPACE_2022-01`
 1. Open Eclipse IDE and choose the newly created `APP_WORKSPACE_2022-01` workspace.
@@ -27,6 +27,7 @@ The `build` command does the ff under the hood:
 1. Run `npx mbx-cli build`
 1. Run the project Activity on Eclipse IDE (to make sure the app works)
 1. Finally, initialize git to keep track on the changes. Open the app project on VS Code; click on the Source Control icon on the sidebar; click "Initialize Repository"
+1. Head on to [mbx-gulp](https://github.com/earvinpiamonte/mbx-gulp#recomended-workflow) documentation for the recommended workflow after project checkout
 
 ## Update or add `mbx-gulp` template
 
