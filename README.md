@@ -25,7 +25,8 @@ The `build` command does the ff under the hood:
 1. Checkout app project
 1. Open the terminal once again and do `cd APP_WORKSPACE_2022-01/app/`
 1. Run `npx mbx-cli build`
-1. Run the project Activity on Eclipse IDE
+1. Run the project Activity on Eclipse IDE (to make sure the app works)
+1. Finally, initialize git to keep track on the changes. Open the app project on VS Code; click on the Source Control icon on the sidebar; click "Initialize Repository"
 
 ## Update or add `mbx-gulp` template
 
