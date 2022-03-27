@@ -1,5 +1,7 @@
 ## mbx-cli
 
+CLI tool to add [mbx-gulp](https://github.com/earvinpiamonte/mbx-gulp) preset/ configs on a custom Ionic v1 project (CLI helper tool).
+
 ## Usage
 
 ```
@@ -32,6 +34,8 @@ The `build` command does the ff under the hood:
 ## Update or add `mbx-gulp` template
 
 To update or add [mbx-gulp](https://github.com/earvinpiamonte/mbx-gulp) on your current app project, execute the `build` command with the `-u` option:
+
+> NOTE: Stop any currently running processes such as gulp watch before running any `npx mbx-cli` commands.
 
 ```
 cd APP_WORKSPACE_2022-01/app/
