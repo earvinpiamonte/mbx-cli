@@ -4,11 +4,11 @@ CLI tool to add [mbx-gulp](https://github.com/earvinpiamonte/mbx-gulp) preset/ c
 
 ## Usage
 
-```
+```sh
 cd APP_WORKSPACE_2022-01/app/
 ```
 
-```
+```sh
 npx mbx-cli build
 ```
 
@@ -37,11 +37,11 @@ To update or add [mbx-gulp](https://github.com/earvinpiamonte/mbx-gulp) on your 
 
 > NOTE: Stop any currently running processes such as gulp watch before running any `npx mbx-cli` commands.
 
-```
+```sh
 cd APP_WORKSPACE_2022-01/app/
 ```
 
-```
+```sh
 npx mbx-cli update
 ```
 
