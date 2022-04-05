@@ -39,6 +39,8 @@ const commonFiles = [
   vsCode,
 ];
 
+const updateFlag = '-u';
+
 const _main = (command, arg2 = null) => {
   if (commands[command]) {
     commands[command](arg2);
@@ -279,9 +281,7 @@ const init = (workspace) => {
   console.log('Error: Please specify a workspace.');
 };
 
-const build = async (option) => {
-  const update = '-u';
-
+const build = (option) => {
   try {
     if (!fs.existsSync(buildXml)) {
       console.log(
@@ -291,15 +291,20 @@ const build = async (option) => {
       return;
     }
 
-    option == update ? _reInstallPackages() : _freshInstallPackages();
+    option == updateFlag ? _reInstallPackages() : _freshInstallPackages();
   } catch (error) {
     console.log(`Error: Failed to execute "build" command.`, error);
   }
 };
 
+const update = () => {
+  build(updateFlag);
+};
+
 const commands = {
   init,
   build,
+  update,
 };
 
 _main(command, arg2);
