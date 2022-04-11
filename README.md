@@ -1,6 +1,6 @@
 ## mbx-cli
 
-CLI tool to add [mbx-gulp](https://github.com/earvinpiamonte/mbx-gulp) preset/ configs on a custom Ionic v1 project (CLI helper tool).
+CLI tool to add [mbx-gulp](https://github.com/earvinpiamonte/mbx-gulp) on a custom Ionic v1 project (CLI helper tool).
 
 ## Usage
 
@@ -17,7 +17,7 @@ The `build` command does the ff under the hood:
 1. Updates `sdk.dir` value to `ANDROID_HOME` on `local.properties`
 1. Executes `ant`
 1. Removes `org.crosswalk.engine`
-1. Clones [mbx-gulp](https://github.com/earvinpiamonte/mbx-gulp) template and updates its dependencies (includes: `gulp-cli`, `eslint`)
+1. Clones [mbx-gulp](https://github.com/earvinpiamonte/mbx-gulp) and updates its dependencies (includes: `gulp-cli`, `eslint`)
 1. Installs VS Code [extensions](https://github.com/earvinpiamonte/mbx-gulp#included-vs-code-extensions)
 
 ## Command definitions
