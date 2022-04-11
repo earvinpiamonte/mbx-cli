@@ -18,7 +18,7 @@ The `build` command does the ff under the hood:
 1. Executes `ant`
 1. Removes `org.crosswalk.engine`
 1. Clones [mbx-gulp](https://github.com/earvinpiamonte/mbx-gulp) template and updates its dependencies (includes: `gulp-cli`, `eslint`)
-1. Installs VS Code extension
+1. Installs VS Code [extensions](https://github.com/earvinpiamonte/mbx-gulp#included-vs-code-extensions)
 
 ## Command definitions
 
