@@ -18,7 +18,12 @@ The `build` command does the ff under the hood:
 1. Executes `ant`
 1. Removes `org.crosswalk.engine`
 1. Clones [mbx-gulp](https://github.com/earvinpiamonte/mbx-gulp) template and updates its dependencies (includes: `gulp-cli`, `eslint`)
-1. Installs ESLint VS Code extension
+1. Installs VS Code extension
+
+## Command definitions
+
+- `build` - alternative command to `ant -f...`; run this command after app project checkout.
+- `update` - add/ update [mbx-gulp](https://github.com/earvinpiamonte/mbx-gulp) to app project; run this command to get an updated [mbx-gulp](https://github.com/earvinpiamonte/mbx-gulp) to project.
 
 ## Recommended setup on project checkout
 
