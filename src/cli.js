@@ -15,6 +15,7 @@ const eslintJson = '.eslintrc.json';
 const git = '.git';
 const gitIgnore = '.gitignore';
 const gulpFile = 'gulpfile.js';
+const jsConfig = 'jsconfig.json';
 const localProperties = 'local.properties';
 const nodeModules = 'node_modules';
 const packageJson = 'package.json';
@@ -32,6 +33,7 @@ const commonFiles = [
   eslintJson,
   gitIgnore,
   gulpFile,
+  jsConfig,
   nodeModules,
   packageJson,
   packageLockJson,
