@@ -17,7 +17,7 @@ The `build` command does the ff under the hood:
 1. Updates `sdk.dir` value to `ANDROID_HOME` on `local.properties`
 1. Executes `ant`
 1. Removes `org.crosswalk.engine`
-1. Clones [mbx-gulp](https://github.com/earvinpiamonte/mbx-gulp) and updates its dependencies (includes: `gulp-cli`, `eslint`)
+1. Clones [mbx-gulp](https://github.com/earvinpiamonte/mbx-gulp) and updates its dependencies (including `gulp-cli`)
 1. Installs VS Code [extensions](https://github.com/earvinpiamonte/mbx-gulp#included-vs-code-extensions)
 
 ## Command definitions
