@@ -7,41 +7,41 @@ import path from 'path';
 const [, , command, arg2] = process.argv;
 const { ANDROID_HOME } = process.env;
 
-const gulpRepository = 'https://github.com/earvinpiamonte/mbx-gulp.git';
+const GULP_REPOSITORY = 'https://github.com/earvinpiamonte/mbx-gulp.git';
 
-const buildXml = 'build.xml';
-const crosswalkEngine = 'platforms/android/src/org/crosswalk/engine';
-const eslintJson = '.eslintrc.json';
-const git = '.git';
-const gitIgnore = '.gitignore';
-const gulpFile = 'gulpfile.js';
-const jsConfig = 'jsconfig.json';
-const localProperties = 'local.properties';
-const nodeModules = 'node_modules';
-const packageJson = 'package.json';
-const packageLockJson = 'package-lock.json';
-const prettierIgnore = '.prettierignore';
-const readme = 'README.md';
-const tempGit = 'temp.git';
-const vsCode = '.vscode';
+const BUILD_XML_FILE = 'build.xml';
+const CROSSWALK_ENGINE_DIR = 'platforms/android/src/org/crosswalk/engine';
+const ESLINT_JSON_FILE = '.eslintrc.json';
+const GIT_DIR = '.git';
+const GIT_IGNORE_FILE = '.gitignore';
+const GULP_FILE = 'gulpfile.js';
+const JS_CONFIG_FILE = 'jsconfig.json';
+const LOCAL_PROPERTIES_FILE = 'local.properties';
+const NODE_MODULES_DIR = 'node_modules';
+const PACKAGE_JSON_FILE = 'package.json';
+const PACKAGE_LOCK_JSON_FILE = 'package-lock.json';
+const PRETTIER_IGNORE_FILE = '.prettierignore';
+const README_FILE = 'README.md';
+const TEMP_GIT_DIR = 'temp.git';
+const VSCODE_DIR = '.vscode';
 
-const antBuildCommand = `ant -f ${buildXml} copy-release`;
-const cloneRepoCommand = `git init && git remote add origin ${gulpRepository} && git pull origin main`;
-const npmInstallCommand = 'npm i -g gulp-cli && npm i';
+const ANT_BUILD_COMMAND = `ant -f ${BUILD_XML_FILE} copy-release`;
+const CLONE_REPO_COMMAND = `git init && git remote add origin ${GULP_REPOSITORY} && git pull origin main`;
+const NPM_INSTALL_COMMAND = 'npm i -g gulp-cli && npm i';
 
 const commonFiles = [
-  eslintJson,
-  gitIgnore,
-  gulpFile,
-  jsConfig,
-  nodeModules,
-  packageJson,
-  packageLockJson,
-  prettierIgnore,
-  vsCode,
+  ESLINT_JSON_FILE,
+  GIT_IGNORE_FILE,
+  GULP_FILE,
+  JS_CONFIG_FILE,
+  NODE_MODULES_DIR,
+  PACKAGE_JSON_FILE,
+  PACKAGE_LOCK_JSON_FILE,
+  PRETTIER_IGNORE_FILE,
+  VSCODE_DIR,
 ];
 
-const updateFlag = '-u';
+const UPDATE_FLAG = '-u';
 
 const _main = (command, arg2 = null) => {
   if (commands[command]) {
@@ -71,14 +71,17 @@ const _updateLocalProperties = () => {
   console.log(`Info: Updating "local.properties" ...`);
 
   try {
-    const localPropertiesContents = fs.readFileSync(localProperties, 'utf-8');
+    const localPropertiesContents = fs.readFileSync(
+      LOCAL_PROPERTIES_FILE,
+      'utf-8'
+    );
 
     const newLocalPropertiesContents = localPropertiesContents.replace(
       /sdk.dir=.*/,
       `sdk.dir=${ANDROID_HOME.split(path.sep).join(path.posix.sep)}`
     );
 
-    fs.writeFileSync(localProperties, newLocalPropertiesContents, 'utf8');
+    fs.writeFileSync(LOCAL_PROPERTIES_FILE, newLocalPropertiesContents, 'utf8');
 
     console.log(`Success: Updated "local.properties".`);
   } catch (error) {
@@ -88,7 +91,7 @@ const _updateLocalProperties = () => {
 
 const _backupGit = () => {
   try {
-    fs.rename(git, tempGit, (error) => {
+    fs.rename(GIT_DIR, TEMP_GIT_DIR, (error) => {
       error &&
         console.log('Error: Failed to backup current Git repository.', error);
       return false;
@@ -103,7 +106,7 @@ const _backupGit = () => {
 
 const _restoreGit = () => {
   try {
-    fs.rename(tempGit, git, (error) => {
+    fs.rename(TEMP_GIT_DIR, GIT_DIR, (error) => {
       error &&
         console.log('Error: Failed to restore current Git repository.', error);
       return false;
@@ -127,7 +130,7 @@ const _removeCommonFiles = () => {
 
 const _reInstallPackages = () => {
   try {
-    fs.existsSync(gulpFile) &&
+    fs.existsSync(GULP_FILE) &&
       _removeCommonFiles() &&
       console.log('Success: Removed current "mbx-gulp".');
   } catch (error) {
@@ -136,7 +139,7 @@ const _reInstallPackages = () => {
   }
 
   try {
-    fs.existsSync(git) &&
+    fs.existsSync(GIT_DIR) &&
       _backupGit() &&
       console.log('Success: Backup of project git repository saved.');
   } catch (error) {
@@ -144,33 +147,33 @@ const _reInstallPackages = () => {
     return;
   }
 
-  _run(cloneRepoCommand);
+  _run(CLONE_REPO_COMMAND);
 
   try {
-    fs.rmSync(git, { force: true, recursive: true });
+    fs.rmSync(GIT_DIR, { force: true, recursive: true });
     console.log('Success: Removed "mbx-gulp" git repository.');
   } catch (error) {
     console.log('Error: Failed to cleanup "mbx-gulp" git repository.', error);
     return;
   }
 
-  _run(npmInstallCommand, {
+  _run(NPM_INSTALL_COMMAND, {
     logOnStart: `Info: Installing npm packages ...`,
     logOnComplete: `Success: npm packages installed.`,
   });
 
   try {
-    if (fs.existsSync(readme)) {
-      fs.rmSync(readme, { force: true, recursive: true });
-      console.log(`Success: Removed "${readme}".`);
+    if (fs.existsSync(README_FILE)) {
+      fs.rmSync(README_FILE, { force: true, recursive: true });
+      console.log(`Success: Removed "${README_FILE}".`);
     }
   } catch (error) {
-    console.log(`Error: Failed to remove "${readme}".`, error);
+    console.log(`Error: Failed to remove "${README_FILE}".`, error);
     return;
   }
 
   try {
-    fs.existsSync(tempGit) &&
+    fs.existsSync(TEMP_GIT_DIR) &&
       _restoreGit() &&
       console.log('Success: Restored project git repository.');
   } catch (error) {
@@ -183,7 +186,7 @@ const _reInstallPackages = () => {
 
 const _freshInstallPackages = () => {
   try {
-    if (fs.existsSync(packageJson)) {
+    if (fs.existsSync(PACKAGE_JSON_FILE)) {
       console.log(
         'Warning: Cannot build/ fresh install packages. Please run "build -u" to update "mbx-gulp".'
       );
@@ -196,23 +199,23 @@ const _freshInstallPackages = () => {
 
   _updateLocalProperties();
 
-  _run(antBuildCommand, {
+  _run(ANT_BUILD_COMMAND, {
     logOnStart: `Info: ant copy-release started ...`,
     logOnComplete: `Success: ant copy-release complete".`,
   });
 
   try {
-    if (fs.existsSync(crosswalkEngine)) {
-      fs.rmSync(crosswalkEngine, { force: true, recursive: true });
-      console.log(`Success: Removed "${crosswalkEngine}".`);
+    if (fs.existsSync(CROSSWALK_ENGINE_DIR)) {
+      fs.rmSync(CROSSWALK_ENGINE_DIR, { force: true, recursive: true });
+      console.log(`Success: Removed "${CROSSWALK_ENGINE_DIR}".`);
     }
   } catch (error) {
-    console.log(`Error: Failed to remove "${crosswalkEngine}".`, error);
+    console.log(`Error: Failed to remove "${CROSSWALK_ENGINE_DIR}".`, error);
     return;
   }
 
   try {
-    fs.existsSync(gulpFile) &&
+    fs.existsSync(GULP_FILE) &&
       _removeCommonFiles() &&
       console.log('Success: Removed current "mbx-gulp".');
   } catch (error) {
@@ -221,7 +224,7 @@ const _freshInstallPackages = () => {
   }
 
   try {
-    fs.existsSync(git) &&
+    fs.existsSync(GIT_DIR) &&
       _backupGit() &&
       console.log('Success: Backup of project git repository saved.');
   } catch (error) {
@@ -229,33 +232,33 @@ const _freshInstallPackages = () => {
     return;
   }
 
-  _run(cloneRepoCommand);
+  _run(CLONE_REPO_COMMAND);
 
   try {
-    fs.rmSync(git, { force: true, recursive: true });
+    fs.rmSync(GIT_DIR, { force: true, recursive: true });
     console.log('Success: Removed "mbx-gulp" git repository.');
   } catch (error) {
     console.log('Error: Failed to cleanup "mbx-gulp" git repository.', error);
     return;
   }
 
-  _run(npmInstallCommand, {
+  _run(NPM_INSTALL_COMMAND, {
     logOnStart: `Info: Installing npm packages ...`,
     logOnComplete: `Success: npm packages installed.`,
   });
 
   try {
-    if (fs.existsSync(readme)) {
-      fs.rmSync(readme, { force: true, recursive: true });
-      console.log(`Success: Removed "${readme}".`);
+    if (fs.existsSync(README_FILE)) {
+      fs.rmSync(README_FILE, { force: true, recursive: true });
+      console.log(`Success: Removed "${README_FILE}".`);
     }
   } catch (error) {
-    console.log(`Error: Failed to remove "${readme}".`, error);
+    console.log(`Error: Failed to remove "${README_FILE}".`, error);
     return;
   }
 
   try {
-    fs.existsSync(tempGit) &&
+    fs.existsSync(TEMP_GIT_DIR) &&
       _restoreGit() &&
       console.log('Success: Restored project git repository.');
   } catch (error) {
@@ -285,7 +288,7 @@ const init = (workspace) => {
 
 const build = (option) => {
   try {
-    if (!fs.existsSync(buildXml)) {
+    if (!fs.existsSync(BUILD_XML_FILE)) {
       console.log(
         `Warning: Build command cannot run on this directory. Please make sure to "cd" on the project directory before running "build".`
       );
@@ -293,14 +296,14 @@ const build = (option) => {
       return;
     }
 
-    option == updateFlag ? _reInstallPackages() : _freshInstallPackages();
+    option == UPDATE_FLAG ? _reInstallPackages() : _freshInstallPackages();
   } catch (error) {
     console.log(`Error: Failed to execute "build" command.`, error);
   }
 };
 
 const update = () => {
-  build(updateFlag);
+  build(UPDATE_FLAG);
 };
 
 const commands = {
