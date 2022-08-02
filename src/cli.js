@@ -29,7 +29,7 @@ const ANT_BUILD_COMMAND = `ant -f ${BUILD_XML_FILE} copy-release`;
 const CLONE_REPO_COMMAND = `git init && git remote add origin ${GULP_REPOSITORY} && git pull origin main`;
 const NPM_INSTALL_COMMAND = 'npm i -g gulp-cli && npm i';
 
-const commonFiles = [
+const COMMON_FILES = [
   ESLINT_JSON_FILE,
   GIT_IGNORE_FILE,
   GULP_FILE,
@@ -120,7 +120,7 @@ const _restoreGit = () => {
 };
 
 const _removeCommonFiles = () => {
-  commonFiles.forEach(
+  COMMON_FILES.forEach(
     (path) =>
       fs.existsSync(path) && fs.rmSync(path, { force: true, recursive: true })
   );
