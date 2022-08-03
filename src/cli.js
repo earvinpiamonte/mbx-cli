@@ -89,6 +89,24 @@ const _updateLocalProperties = () => {
   }
 };
 
+const _runAntBuild = () => {
+  _run(ANT_BUILD_COMMAND, {
+    logOnStart: `Info: ant copy-release started ...`,
+    logOnComplete: `Success: ant copy-release complete".`,
+  });
+};
+
+const _removeCrossWalk = () => {
+  try {
+    if (fs.existsSync(CROSSWALK_ENGINE_DIR)) {
+      fs.rmSync(CROSSWALK_ENGINE_DIR, { force: true, recursive: true });
+      console.log(`Success: Removed "${CROSSWALK_ENGINE_DIR}".`);
+    }
+  } catch (error) {
+    console.log(`Error: Failed to remove "${CROSSWALK_ENGINE_DIR}".`, error);
+  }
+};
+
 const _backupGit = () => {
   try {
     fs.rename(GIT_DIR, TEMP_GIT_DIR, (error) => {
@@ -199,20 +217,9 @@ const _freshInstallPackages = () => {
 
   _updateLocalProperties();
 
-  _run(ANT_BUILD_COMMAND, {
-    logOnStart: `Info: ant copy-release started ...`,
-    logOnComplete: `Success: ant copy-release complete".`,
-  });
+  _runAntBuild();
 
-  try {
-    if (fs.existsSync(CROSSWALK_ENGINE_DIR)) {
-      fs.rmSync(CROSSWALK_ENGINE_DIR, { force: true, recursive: true });
-      console.log(`Success: Removed "${CROSSWALK_ENGINE_DIR}".`);
-    }
-  } catch (error) {
-    console.log(`Error: Failed to remove "${CROSSWALK_ENGINE_DIR}".`, error);
-    return;
-  }
+  _removeCrossWalk();
 
   try {
     fs.existsSync(GULP_FILE) &&
@@ -306,10 +313,34 @@ const update = () => {
   build(UPDATE_FLAG);
 };
 
+const ant = () => {
+  try {
+    if (!fs.existsSync(BUILD_XML_FILE)) {
+      console.log(
+        `Warning: ant command cannot run on this directory. Please make sure to "cd" on the project directory before running "ant".`
+      );
+
+      return;
+    }
+
+    _updateLocalProperties();
+    _runAntBuild();
+    _removeCrossWalk();
+  } catch (error) {
+    console.log(`Error: Failed to execute "ant" command.`, error);
+  }
+};
+
+const install = () => {
+  build(UPDATE_FLAG);
+};
+
 const commands = {
   init,
   build,
   update,
+  ant,
+  install,
 };
 
 _main(command, arg2);
