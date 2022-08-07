@@ -14,7 +14,7 @@ npx mbx-cli build
 
 The `build` command does the ff under the hood:
 
-1. Automaticall updates `sdk.dir` value to machine's `ANDROID_HOME` on `local.properties`
+1. Automatically updates `sdk.dir` value to machine's `ANDROID_HOME` on `local.properties`
 1. Executes `ant`
 1. Removes `org.crosswalk.engine`
 1. Clones [mbx-gulp](https://github.com/earvinpiamonte/mbx-gulp) and updates its dependencies (including `gulp-cli`)
