@@ -25,7 +25,7 @@ The `build` command does the ff under the hood:
 - `build` - the `ant -f...` command with the [mbx-gulp](https://github.com/earvinpiamonte/mbx-gulp); run this after app project checkout.
 - `update` - updates existing [mbx-gulp](https://github.com/earvinpiamonte/mbx-gulp) to app project; run this to get an updated [mbx-gulp](https://github.com/earvinpiamonte/mbx-gulp) to project.
 - `install` - installs [mbx-gulp](https://github.com/earvinpiamonte/mbx-gulp) to app project.
-- `ant` - updated `local.properties` and does `ant -f...` command without the [mbx-gulp](https://github.com/earvinpiamonte/mbx-gulp).
+- `ant` - updates `local.properties` and does the `ant -f...` command without the [mbx-gulp](https://github.com/earvinpiamonte/mbx-gulp).
 
 ## Recommended setup on project checkout
 
