@@ -1,6 +1,6 @@
 ## mbx-cli
 
-CLI tool to add [mbx-gulp](https://github.com/earvinpiamonte/mbx-gulp) on a custom Ionic v1 project (CLI helper tool).
+CLI tool to manage [mbx-gulp](https://github.com/earvinpiamonte/mbx-gulp) on a custom Ionic v1 project.
 
 ## Usage
 
@@ -38,7 +38,7 @@ The `build` command does the ff under the hood:
 1. Run the project Activity on Eclipse IDE (to make sure the app works)
 1. Finally, initialize git to keep track on the changes. Open the app project on VS Code; click on the Source Control icon on the sidebar; click "Initialize Repository"
 
-## Update `mbx-gulp` template
+## Update `mbx-gulp`
 
 To update [mbx-gulp](https://github.com/earvinpiamonte/mbx-gulp) on your current app project:
 
