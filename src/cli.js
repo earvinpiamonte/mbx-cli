@@ -28,6 +28,7 @@ const VSCODE_DIR = '.vscode';
 const ANT_BUILD_COMMAND = `ant -f ${BUILD_XML_FILE} copy-release`;
 const CLONE_REPO_COMMAND = `git init && git remote add origin ${GULP_REPOSITORY} && git pull origin main`;
 const NPM_INSTALL_COMMAND = 'npm i -g gulp-cli && npm i';
+const DISCARD_LOCAL_PROPERTIES_COMMAND = `git reset HEAD ${LOCAL_PROPERTIES_FILE} && git checkout -- ${LOCAL_PROPERTIES_FILE}`;
 
 const COMMON_FILES = [
   ESLINT_JSON_FILE,
@@ -86,6 +87,18 @@ const _updateLocalProperties = () => {
     console.log(`Success: Updated "local.properties".`);
   } catch (error) {
     console.log(`Error: Failed to update "local.properties".`);
+  }
+};
+
+const _discardLocalProperties = () => {
+  try {
+    fs.existsSync(GIT_DIR) &&
+      _run(DISCARD_LOCAL_PROPERTIES_COMMAND, {
+        logOnStart: `Info: Discarding updates on "${LOCAL_PROPERTIES_FILE}"...`,
+        logOnComplete: `Success: Updates on "${LOCAL_PROPERTIES_FILE}" discarded.`,
+      });
+  } catch (error) {
+    console.log(`Error: Failed to discard "${LOCAL_PROPERTIES_FILE}".`);
   }
 };
 
@@ -220,6 +233,8 @@ const _freshInstallPackages = () => {
   _runAntBuild();
 
   _removeCrossWalk();
+
+  _discardLocalProperties();
 
   try {
     fs.existsSync(GULP_FILE) &&
