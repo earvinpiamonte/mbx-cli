@@ -13,6 +13,7 @@ const BUILD_XML_FILE = 'build.xml';
 const CROSSWALK_ENGINE_DIR = 'platforms/android/src/org/crosswalk/engine';
 const ESLINT_JSON_FILE = '.eslintrc.json';
 const GIT_DIR = '.git';
+const ROOT_GIT_DIR = `../${GIT_DIR}`;
 const GIT_IGNORE_FILE = '.gitignore';
 const GULP_FILE = 'gulpfile.js';
 const JS_CONFIG_FILE = 'jsconfig.json';
@@ -92,7 +93,7 @@ const _updateLocalProperties = () => {
 
 const _discardLocalProperties = () => {
   try {
-    fs.existsSync(GIT_DIR) &&
+    (fs.existsSync(GIT_DIR) || fs.existsSync(ROOT_GIT_DIR)) &&
       _run(DISCARD_LOCAL_PROPERTIES_COMMAND, {
         logOnStart: `Info: Discarding updates on "${LOCAL_PROPERTIES_FILE}"...`,
         logOnComplete: `Success: Updates on "${LOCAL_PROPERTIES_FILE}" discarded.`,
