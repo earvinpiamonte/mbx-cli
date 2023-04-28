@@ -70,7 +70,7 @@ const _run = (command, options = {}) => {
 };
 
 const _updateLocalProperties = () => {
-  console.log(`Info: Updating "local.properties" ...`);
+  console.log(`Info: Updating ${LOCAL_PROPERTIES_FILE} ...`);
 
   try {
     const localPropertiesContents = fs.readFileSync(
@@ -85,9 +85,9 @@ const _updateLocalProperties = () => {
 
     fs.writeFileSync(LOCAL_PROPERTIES_FILE, newLocalPropertiesContents, 'utf8');
 
-    console.log(`Success: Updated "local.properties".`);
+    console.log(`Success: Updated ${LOCAL_PROPERTIES_FILE}.`);
   } catch (error) {
-    console.log(`Error: Failed to update "local.properties".`);
+    console.log(`Error: Failed to update ${LOCAL_PROPERTIES_FILE}.`);
   }
 };
 
