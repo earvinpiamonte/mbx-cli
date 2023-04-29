@@ -99,7 +99,7 @@ const _discardLocalProperties = () => {
         logOnComplete: `Success: Updates on "${LOCAL_PROPERTIES_FILE}" discarded.`,
       });
   } catch (error) {
-    console.log(`Error: Failed to discard "${LOCAL_PROPERTIES_FILE}".`);
+    console.log(`Error: Failed to discard "${LOCAL_PROPERTIES_FILE}".`, error);
   }
 };
 
