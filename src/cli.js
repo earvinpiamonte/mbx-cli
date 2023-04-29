@@ -13,6 +13,7 @@ const BUILD_XML_FILE = 'build.xml';
 const CROSSWALK_ENGINE_DIR = 'platforms/android/src/org/crosswalk/engine';
 const ESLINT_JSON_FILE = '.eslintrc.json';
 const GIT_DIR = '.git';
+const ROOT_GIT_DIR = `../${GIT_DIR}`;
 const GIT_IGNORE_FILE = '.gitignore';
 const GULP_FILE = 'gulpfile.js';
 const JS_CONFIG_FILE = 'jsconfig.json';
@@ -28,6 +29,7 @@ const VSCODE_DIR = '.vscode';
 const ANT_BUILD_COMMAND = `ant -f ${BUILD_XML_FILE} copy-release`;
 const CLONE_REPO_COMMAND = `git init && git remote add origin ${GULP_REPOSITORY} && git pull origin main`;
 const NPM_INSTALL_COMMAND = 'npm i -g gulp-cli && npm i';
+const DISCARD_LOCAL_PROPERTIES_COMMAND = `git reset HEAD ${LOCAL_PROPERTIES_FILE} && git checkout -- ${LOCAL_PROPERTIES_FILE}`;
 
 const COMMON_FILES = [
   ESLINT_JSON_FILE,
@@ -68,7 +70,7 @@ const _run = (command, options = {}) => {
 };
 
 const _updateLocalProperties = () => {
-  console.log(`Info: Updating "local.properties" ...`);
+  console.log(`Info: Updating ${LOCAL_PROPERTIES_FILE} ...`);
 
   try {
     const localPropertiesContents = fs.readFileSync(
@@ -83,9 +85,21 @@ const _updateLocalProperties = () => {
 
     fs.writeFileSync(LOCAL_PROPERTIES_FILE, newLocalPropertiesContents, 'utf8');
 
-    console.log(`Success: Updated "local.properties".`);
+    console.log(`Success: Updated ${LOCAL_PROPERTIES_FILE}.`);
   } catch (error) {
-    console.log(`Error: Failed to update "local.properties".`);
+    console.log(`Error: Failed to update ${LOCAL_PROPERTIES_FILE}.`);
+  }
+};
+
+const _discardLocalProperties = () => {
+  try {
+    (fs.existsSync(GIT_DIR) || fs.existsSync(ROOT_GIT_DIR)) &&
+      _run(DISCARD_LOCAL_PROPERTIES_COMMAND, {
+        logOnStart: `Info: Discarding updates on "${LOCAL_PROPERTIES_FILE}"...`,
+        logOnComplete: `Success: Updates on "${LOCAL_PROPERTIES_FILE}" discarded.`,
+      });
+  } catch (error) {
+    console.log(`Error: Failed to discard "${LOCAL_PROPERTIES_FILE}".`, error);
   }
 };
 
@@ -220,6 +234,8 @@ const _freshInstallPackages = () => {
   _runAntBuild();
 
   _removeCrossWalk();
+
+  _discardLocalProperties();
 
   try {
     fs.existsSync(GULP_FILE) &&
