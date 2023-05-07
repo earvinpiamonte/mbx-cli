@@ -46,9 +46,9 @@ The `build` command does the ff under the hood:
 1. Clone your project from remote
 1. Open the terminal and `cd` to the local copy of your app project; e.g. `cd clonedProject/app/`
 1. Run `npx mbx-cli build`
-1. Import `platforms` from Android Studio (excluding crosswalk)
+1. Import `platforms` from Android Studio
 1. Add EMDK SDK as external lib
-1. Run the app project Activity on Android Studio (to make sure the app works)
+1. Run the app project Activity on Android Studio
 
 ## Recommended setup on app project checkout with **CVS**
 
