@@ -77,8 +77,6 @@ cd clonedProject/app/
 npx mbx-cli update
 ```
 
-> Deprecation notice: `build -u` will still work but will be removed in the future. Please use `update` command as much as possible.
-
 Head on to [mbx-gulp](https://github.com/earvinpiamonte/mbx-gulp#recomended-workflow) documentation for the recommended workflow after project checkout.
 
 ## Maintainer
