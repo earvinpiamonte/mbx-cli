@@ -81,4 +81,4 @@ Head on to [mbx-gulp](https://github.com/earvinpiamonte/mbx-gulp#recomended-work
 
 ## Maintainer
 
-Designed and developed by Noel Earvin Piamonte
+Designed and developed by [Noel Earvin Piamonte](https://earv.in/)
